@@ -1,0 +1,604 @@
+{% extends 'core/base.html' %}
+{% block title %}EcoAlchemy - About Us{% endblock %}
+
+{% block extra_css %}
+<style>
+    .about-hero {
+        background: linear-gradient(135deg, #198754 0%, #20c665 100%);
+        color: white;
+        padding: 5rem 0;
+        position: relative;
+        margin-bottom: 3rem;
+    }
+
+    .about-hero h1 {
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    .about-content {
+        margin-bottom: 4rem;
+    }
+
+    .about-section {
+        margin-bottom: 4rem;
+    }
+
+    .section-title {
+        color: #2c3e50;
+        font-weight: 700;
+        position: relative;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background-color: #2ecc71;
+    }
+
+    .value-card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+        height: 100%;
+    }
+
+    .value-card:hover {
+        transform: translateY(-8px);
+    }
+
+    .value-card .card-title {
+        color: #198754;
+        font-weight: 600;
+    }
+
+    .value-icon {
+        font-size: 2.5rem;
+        color: #198754;
+        margin-bottom: 1rem;
+    }
+
+    .team-member {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .team-photo {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 1rem;
+        border: 4px solid #f4f6f7;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .team-member h5 {
+        margin-bottom: 0.3rem;
+        color: #2c3e50;
+    }
+
+    .team-member .position {
+        color: #198754;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .map-container {
+        height: 450px;
+        width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        margin-bottom: 2rem;
+    }
+
+    .contact-form {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .timeline {
+        position: relative;
+        padding-left: 41px;
+        margin-top: 2rem;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 20px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: #2ecc71;
+    }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 2.5rem;
+    }
+
+    .timeline-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .timeline-marker {
+        position: absolute;
+        left: -30px;
+        width: 20px;
+        height: 20px;
+        background-color: #2ecc71;
+        border-radius: 50%;
+        border: 3px solid white;
+        box-shadow: 0 0 0 3px #2ecc71;
+    }
+
+    .timeline-year {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        background-color: #198754;
+        color: white;
+        border-radius: 20px;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .impact-counter {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .impact-counter .number {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #198754;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .impact-counter .label {
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    .testimonial-card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding: 1.5rem;
+    }
+
+    .testimonial-card::before {
+        content: '\201C';
+        font-size: 5rem;
+        color: rgba(46, 204, 113, 0.1);
+        position: absolute;
+        top: -15px;
+        left: 10px;
+        font-family: Georgia, serif;
+    }
+
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+        margin-top: 1rem;
+    }
+
+    .testimonial-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 1rem;
+    }
+
+    .partner-logo {
+        height: 80px;
+        object-fit: contain;
+        filter: grayscale(1);
+        opacity: 0.7;
+        transition: all 0.3s ease;
+    }
+
+    .partner-logo:hover {
+        filter: grayscale(0);
+        opacity: 1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="about-hero text-center">
+    <div class="container">
+        <h1 class="display-4 mb-3">About EcoAlchemy</h1>
+        <p class="lead mb-0">Transforming Industrial Waste into Sustainable Solutions</p>
+    </div>
+</div>
+
+<div class="container about-content">
+    <!-- Our Mission Section -->
+    <div class="row about-section">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <h2 class="section-title">Our Mission</h2>
+            <p>At EcoAlchemy, we're revolutionizing how industries handle waste. Our mission is to transform industrial byproducts into valuable resources through secure and anonymous exchanges, promoting a circular economy while protecting business interests.</p>
+            <p>Founded in 2021, we've built a trusted marketplace where companies can safely list their waste materials, connect with potential buyers, and contribute to environmental sustainability without compromising proprietary information.</p>
+            <p>We believe that sustainability and profitability can go hand in hand. By facilitating the reuse and recycling of industrial waste, we help reduce landfill usage, minimize environmental impact, and create economic opportunities for all participants.</p>
+        </div>
+        <div class="col-lg-6">
+            <img src="/api/placeholder/600/400" alt="EcoAlchemy Mission" class="img-fluid rounded shadow">
+        </div>
+    </div>
+
+    <!-- Our Impact Section -->
+    <div class="about-section">
+        <h2 class="section-title text-center">Our Impact</h2>
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="impact-counter">
+                    <span class="number">1.2M</span>
+                    <span class="label">Tons of Waste Diverted</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="impact-counter">
+                    <span class="number">500+</span>
+                    <span class="label">Active Companies</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="impact-counter">
+                    <span class="number">3,450</span>
+                    <span class="label">Successful Exchanges</span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="impact-counter">
+                    <span class="number">87%</span>
+                    <span class="label">Waste Utilization Rate</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Our Values Section -->
+    <div class="about-section">
+        <h2 class="section-title">Our Values</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card value-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shield-alt value-icon"></i>
+                        <h5 class="card-title">Confidentiality</h5>
+                        <p class="card-text">We protect your company's proprietary information while facilitating valuable exchanges.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card value-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-leaf value-icon"></i>
+                        <h5 class="card-title">Sustainability</h5>
+                        <p class="card-text">Every transaction contributes to a healthier planet and circular economy.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card value-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-handshake value-icon"></i>
+                        <h5 class="card-title">Integrity</h5>
+                        <p class="card-text">We maintain transparent operations and foster trust among all platform users.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Our Story Section -->
+    <div class="about-section">
+        <h2 class="section-title">Our Journey</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2021</span>
+                    <h5>EcoAlchemy Founded</h5>
+                    <p>Started with a vision to transform industrial waste management through secure exchanges.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2022</span>
+                    <h5>Platform Launch</h5>
+                    <p>Launched our secure marketplace with 50 founding member companies.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2023</span>
+                    <h5>Green Credit System</h5>
+                    <p>Introduced our innovative Green Credit system, rewarding sustainable practices.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2024</span>
+                    <h5>International Expansion</h5>
+                    <p>Expanded operations across North America and Europe, reaching 500+ active members.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <span class="timeline-year">2025</span>
+                    <h5>Product Marketplace Launch</h5>
+                    <p>Added recycled product marketplace to complete the circular economy loop.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Section -->
+    <div class="about-section">
+        <h2 class="section-title text-center">Our Leadership Team</h2>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-3">
+                <div class="team-member">
+                    <img src="/api/placeholder/180/180" alt="CEO" class="team-photo">
+                    <h5>Elena Rodriguez</h5>
+                    <div class="position">CEO & Co-Founder</div>
+                    <p class="small text-muted">Former sustainability executive with 15+ years in waste management innovation.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="team-member">
+                    <img src="/api/placeholder/180/180" alt="CTO" class="team-photo">
+                    <h5>Michael Chen</h5>
+                    <div class="position">CTO</div>
+                    <p class="small text-muted">Security specialist and blockchain expert bringing privacy-first solutions to waste exchange.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="team-member">
+                    <img src="/api/placeholder/180/180" alt="COO" class="team-photo">
+                    <h5>Sarah Johnson</h5>
+                    <div class="position">COO</div>
+                    <p class="small text-muted">Operations expert with background in supply chain optimization and circular economies.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="team-member">
+                    <img src="/api/placeholder/180/180" alt="CSO" class="team-photo">
+                    <h5>Dr. James Wilson</h5>
+                    <div class="position">Chief Sustainability Officer</div>
+                    <p class="small text-muted">Environmental scientist specializing in industrial ecology and sustainable manufacturing.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <div class="about-section">
+        <h2 class="section-title">What Our Members Say</h2>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="testimonial-card">
+                    <p>"EcoAlchemy has transformed our waste management costs into a revenue stream while maintaining our proprietary process confidentiality. The platform's security measures gave us the confidence to participate in the circular economy."</p>
+                    <div class="testimonial-author">
+                        <img src="/api/placeholder/50/50" alt="Testimonial" class="testimonial-avatar">
+                        <div>
+                            <h6 class="mb-0">David Park</h6>
+                            <small class="text-muted">Sustainability Director, GreenTech Industries</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="testimonial-card">
+                    <p>"As a materials processor, finding consistent sources of industrial byproducts was challenging until we joined EcoAlchemy. Now we have reliable access to high-quality waste streams that power our recycled product line."</p>
+                    <div class="testimonial-author">
+                        <img src="/api/placeholder/50/50" alt="Testimonial" class="testimonial-avatar">
+                        <div>
+                            <h6 class="mb-0">Aisha Patel</h6>
+                            <small class="text-muted">CEO, Circular Materials Co.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Partners Section -->
+    <div class="about-section">
+        <h2 class="section-title text-center">Our Partners</h2>
+        <div class="row justify-content-center align-items-center mt-4">
+            <div class="col-md-2 col-6 mb-4">
+                <img src="/api/placeholder/160/80" alt="Partner Logo" class="img-fluid partner-logo">
+            </div>
+            <div class="col-md-2 col-6 mb-4">
+                <img src="/api/placeholder/160/80" alt="Partner Logo" class="img-fluid partner-logo">
+            </div>
+            <div class="col-md-2 col-6 mb-4">
+                <img src="/api/placeholder/160/80" alt="Partner Logo" class="img-fluid partner-logo">
+            </div>
+            <div class="col-md-2 col-6 mb-4">
+                <img src="/api/placeholder/160/80" alt="Partner Logo" class="img-fluid partner-logo">
+            </div>
+            <div class="col-md-2 col-6 mb-4">
+                <img src="/api/placeholder/160/80" alt="Partner Logo" class="img-fluid partner-logo">
+            </div>
+        </div>
+    </div>
+
+    <!-- Locations and Contact Section -->
+    <div class="row about-section">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+            <h2 class="section-title">Where We Operate</h2>
+            <div class="map-container">
+                <!-- Interactive Map will be inserted here -->
+                <div id="map" style="height: 100%; width: 100%;"></div>
+            </div>
+            <div class="d-flex flex-wrap">
+                <div class="me-4 mb-3">
+                    <h6><i class="fas fa-building me-2 text-success"></i>Headquarters</h6>
+                    <p class="mb-0 text-muted">123 Green Street<br>San Francisco, CA 94105</p>
+                </div>
+                <div class="me-4 mb-3">
+                    <h6><i class="fas fa-map-marker-alt me-2 text-success"></i>Europe Office</h6>
+                    <p class="mb-0 text-muted">45 Circular Avenue<br>Amsterdam, Netherlands</p>
+                </div>
+                <div class="mb-3">
+                    <h6><i class="fas fa-map-marker-alt me-2 text-success"></i>Asia Office</h6>
+                    <p class="mb-0 text-muted">78 Eco Tower, 15th Floor<br>Singapore, 189652</p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Initialize the map when the page loads
+    function initMap() {
+        // Map options - centered on San Francisco
+        const mapOptions = {
+            zoom: 2,
+            center: {lat: 25, lng: 10},
+            styles: [
+                {
+                    "featureType": "administrative",
+                    "elementType": "all",
+                    "stylers": [{"saturation": "-100"}]
+                },
+                {
+                    "featureType": "administrative.province",
+                    "elementType": "all",
+                    "stylers": [{"visibility": "off"}]
+                },
+                {
+                    "featureType": "landscape",
+                    "elementType": "all",
+                    "stylers": [{"saturation": -100}, {"lightness": 65}, {"visibility": "on"}]
+                },
+                {
+                    "featureType": "poi",
+                    "elementType": "all",
+                    "stylers": [{"saturation": -100}, {"lightness": "50"}, {"visibility": "simplified"}]
+                },
+                {
+                    "featureType": "road",
+                    "elementType": "all",
+                    "stylers": [{"saturation": "-100"}]
+                },
+                {
+                    "featureType": "road.highway",
+                    "elementType": "all",
+                    "stylers": [{"visibility": "simplified"}]
+                },
+                {
+                    "featureType": "road.arterial",
+                    "elementType": "all",
+                    "stylers": [{"lightness": "30"}]
+                },
+                {
+                    "featureType": "road.local",
+                    "elementType": "all",
+                    "stylers": [{"lightness": "40"}]
+                },
+                {
+                    "featureType": "transit",
+                    "elementType": "all",
+                    "stylers": [{"saturation": -100}, {"visibility": "simplified"}]
+                },
+                {
+                    "featureType": "water",
+                    "elementType": "geometry",
+                    "stylers": [{"hue": "#ffff00"}, {"lightness": -25}, {"saturation": -97}]
+                },
+                {
+                    "featureType": "water",
+                    "elementType": "labels",
+                    "stylers": [{"lightness": -25}, {"saturation": -100}]
+                }
+            ]
+        };
+
+        // Create the map
+        const map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        // Define office locations
+        const locations = [
+            {
+                position: {lat: 37.7749, lng: -122.4194},
+                title: "San Francisco HQ",
+                content: "<h6>Headquarters</h6><p>123 Green Street<br>San Francisco, CA 94105</p>"
+            },
+            {
+                position: {lat: 52.3676, lng: 4.9041},
+                title: "Amsterdam Office",
+                content: "<h6>Europe Office</h6><p>45 Circular Avenue<br>Amsterdam, Netherlands</p>"
+            },
+            {
+                position: {lat: 1.3521, lng: 103.8198},
+                title: "Singapore Office",
+                content: "<h6>Asia Office</h6><p>78 Eco Tower, 15th Floor<br>Singapore, 189652</p>"
+            },
+            {
+                position: {lat: 51.5074, lng: -0.1278},
+                title: "London Partner Office",
+                content: "<h6>UK Partner Office</h6><p>25 Sustainability Road<br>London, UK</p>"
+            },
+            {
+                position: {lat: 40.7128, lng: -74.0060},
+                title: "New York Partner Office",
+                content: "<h6>New York Partner Office</h6><p>500 Green Plaza<br>New York, NY</p>"
+            }
+        ];
+
+        // Create info window
+        const infoWindow = new google.maps.InfoWindow();
+
+        // Add markers for each location
+        locations.forEach(location => {
+            const marker = new google.maps.Marker({
+                position: location.position,
+                map: map,
+                title: location.title,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    fillColor: '#198754',
+                    fillOpacity: 0.9,
+                    strokeColor: '#ffffff',
+                    strokeWeight: 2,
+                    scale: 8
+                }
+            });
+
+            // Add click event for info window
+            marker.addListener('click', () => {
+                infoWindow.setContent(`<div style="padding: 0.5rem;">${location.content}</div>`);
+                infoWindow.open(map, marker);
+            });
+        });
+    }
+</script>
+<!-- Google Maps API with callback to initMap -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+{% endblock %}

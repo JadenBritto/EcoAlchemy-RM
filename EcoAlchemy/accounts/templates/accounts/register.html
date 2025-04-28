@@ -1,0 +1,151 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}EcoAlchemy - Register{% endblock %}
+
+{% block extra_css %}
+<style>
+    .register-header {
+        background: linear-gradient(135deg, #198754 0%, #20c665 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .register-card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .register-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .register-card .card-header {
+        background-color: #198754;
+        color: white;
+        font-weight: 600;
+        border-bottom: none;
+        text-align: center;
+    }
+
+    .form-section {
+        background-color: #f4f6f7;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-section h6 {
+        color: #2c3e50;
+        border-bottom: 2px solid #2ecc71;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .register-btn {
+        background-color: #2ecc71;
+        border-color: #2ecc71;
+        transition: all 0.3s ease;
+    }
+
+    .register-btn:hover {
+        background-color: #27ae60;
+        border-color: #27ae60;
+    }
+
+    .login-divider {
+        position: relative;
+        text-align: center;
+        margin: 1.5rem 0;
+    }
+
+    .login-divider::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        border-top: 1px solid #e0e0e0;
+        z-index: 1;
+    }
+
+    .login-divider span {
+        background: white;
+        padding: 0 1rem;
+        position: relative;
+        z-index: 2;
+        color: #7f8c8d;
+    }
+
+    .login-link {
+        color: #2ecc71;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    .login-link:hover {
+        color: #27ae60;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="register-header">
+    <div class="container">
+        <h1 class="display-5">Create Your Account</h1>
+        <p class="lead">Join EcoAlchemy and Start Your Sustainable Journey</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="card register-card">
+                <div class="card-header">
+                    <i class="fas fa-user-plus me-2"></i>Register a New Account
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-section">
+                                    <h6>
+                                        <i class="fas fa-user me-2"></i>Account Information
+                                    </h6>
+                                    {{ user_form|crispy }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-section">
+                                    <h6>
+                                        <i class="fas fa-id-card me-2"></i>Profile Details
+                                    </h6>
+                                    {{ profile_form|crispy }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn register-btn btn-lg">
+                                <i class="fas fa-check me-2"></i>Register
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="login-divider">
+                        <span>Already a Member?</span>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p>Already have an account? <a href="{% url 'login' %}" class="login-link">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

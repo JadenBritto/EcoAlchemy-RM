@@ -1,0 +1,62 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ case.title }} - EcoAlchemy{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'case_list' %}">Consultation Cases</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ case.title }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">{{ case.title }}</h5>
+    </div>
+    <div class="card-body">
+        <p><strong>Status:</strong> 
+            <span class="badge bg-{% if case.status == 'open' %}danger{% elif case.status == 'in_progress' %}warning{% elif case.status == 'resolved' %}success{% else %}secondary{% endif %}">
+                {{ case.get_status_display }}
+            </span>
+        </p>
+        <p><strong>Created:</strong> {{ case.created_at|date:"F d, Y" }}</p>
+        {% if case.waste_listing %}
+            <p><strong>Related Waste Listing:</strong> <a href="{% url 'waste_detail' case.waste_listing.pk %}">{{ case.waste_listing.title }}</a></p>
+        {% endif %}
+        {% if user.profile.user_type == 'consultant' %}
+            <p><strong>Client:</strong> {{ case.client.username }}</p>
+        {% endif %}
+        <h5>Description</h5>
+        <p>{{ case.description }}</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">Comments</h5>
+    </div>
+    <div class="card-body">
+        {% if comments %}
+            {% for comment in comments %}
+                <div class="border-bottom pb-3 mb-3">
+                    <p><strong>{{ comment.user.username }}</strong> <small class="text-muted">{{ comment.created_at|date:"F d, Y H:i" }}</small></p>
+                    <p>{{ comment.comment }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No comments yet.</p>
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            {{ comment_form|crispy }}
+            <button type="submit" class="btn btn-primary">Add Comment</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

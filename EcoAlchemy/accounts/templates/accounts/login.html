@@ -1,0 +1,120 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}EcoAlchemy - Login{% endblock %}
+
+{% block extra_css %}
+<style>
+    .login-header {
+        background: linear-gradient(135deg, #198754 0%, #20c665 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .login-card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .login-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .login-card .card-header {
+        background-color: #198754;
+        color: white;
+        font-weight: 600;
+        border-bottom: none;
+        text-align: center;
+    }
+
+    .login-btn {
+        background-color: #2ecc71;
+        border-color:#198754;
+        transition: all 0.3s ease;
+    }
+
+    .login-btn:hover {
+        background-color: #27ae60;
+        border-color: #198754;
+    }
+
+    .login-divider {
+        position: relative;
+        text-align: center;
+        margin: 1.5rem 0;
+    }
+
+    .login-divider::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        border-top: 1px solid #e0e0e0;
+        z-index: 1;
+    }
+
+    .login-divider span {
+        background: white;
+        padding: 0 1rem;
+        position: relative;
+        z-index: 2;
+        color: #7f8c8d;
+    }
+
+    .register-link {
+        color: #2ecc71;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    .register-link:hover {
+        color: #27ae60;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-header">
+    <div class="container">
+        <h1 class="display-5">Welcome Back</h1>
+        <p class="lead">Login to Your EcoAlchemy Account</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card login-card">
+                <div class="card-header">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login to EcoAlchemy
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="d-grid gap-2 mt-3">
+                            <button type="submit" class="btn login-btn btn-lg">
+                                <i class="fas fa-lock me-2"></i>Login
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="login-divider">
+                        <span>New to EcoAlchemy?</span>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p>Don't have an account? <a href="{% url 'register' %}" class="register-link">Register here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,154 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}EcoAlchemy - Apply for Industry Status{% endblock %}
+
+{% block extra_css %}
+<style>
+    .industry-application-header {
+        background: linear-gradient(135deg, #198754 0%, #20c665 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .industry-application-card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .industry-application-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .industry-application-card .card-header {
+        background-color: #2ecc71;
+        color: white;
+        font-weight: 600;
+        border-bottom: none;
+        text-align: center;
+    }
+
+    .info-alert {
+        background-color: #e7f3fe;
+        border-left: 4px solid #2ecc71;
+        border-radius: 4px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .info-alert i {
+        color: #2ecc71;
+        margin-right: 0.75rem;
+    }
+
+    .form-section {
+        background-color: #f4f6f7;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .submit-btn {
+        background-color: #2ecc71;
+        border-color: #2ecc71;
+        transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        background-color: #27ae60;
+        border-color: #27ae60;
+    }
+
+    .benefits-section {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .benefits-section h6 {
+        color: #2c3e50;
+        border-bottom: 2px solid #2ecc71;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .benefits-list {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    .benefits-list li {
+        position: relative;
+        padding-left: 2rem;
+        margin-bottom: 0.75rem;
+        color: #2c3e50;
+    }
+
+    .benefits-list li::before {
+        content: '\2713';
+        position: absolute;
+        left: 0;
+        color: #2ecc71;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="industry-application-header">
+    <div class="container">
+        <h1 class="display-5">Apply for Industry Status</h1>
+        <p class="lead">Transform Your Waste Management Approach</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="card industry-application-card">
+                <div class="card-header">
+                    <i class="fas fa-industry me-2"></i>Industry Status Application
+                </div>
+                <div class="card-body">
+                    <div class="info-alert">
+                        <i class="fas fa-info-circle fa-2x"></i>
+                        By applying for industry status, you'll gain access to our specialized waste exchange and recycling marketplace.
+                    </div>
+
+                    <div class="benefits-section">
+                        <h6>
+                            <i class="fas fa-star me-2"></i>Benefits of Industry Status
+                        </h6>
+                        <ul class="benefits-list">
+                            <li>List waste materials for exchange or recycling</li>
+                            <li>Access to a network of potential waste buyers and recyclers</li>
+                            <li>Earn Green Credits for sustainable practices</li>
+                            <li>Detailed waste management analytics and insights</li>
+                            <li>Showcase products made from recycled waste</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-section mt-4">
+                        <h6>
+                            <i class="fas fa-file-alt me-2"></i>Application Details
+                        </h6>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <div class="d-grid gap-2 mt-3">
+                                <button type="submit" class="btn submit-btn btn-lg">
+                                    <i class="fas fa-paper-plane me-2"></i>Submit Application
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

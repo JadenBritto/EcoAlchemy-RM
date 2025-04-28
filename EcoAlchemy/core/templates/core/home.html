@@ -1,0 +1,228 @@
+{% extends 'core/base.html' %}
+{% block title %}EcoAlchemy - Home{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #198754 0%, #20c665 100%);
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .feature-card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        transform-origin: center;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .feature-card .card-title {
+        color: #2ecc71;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .listing-card {
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .listing-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+    }
+
+    .listing-card .card-img-top {
+        height: 250px;
+        object-fit: cover;
+    }
+
+    .no-image-placeholder {
+        background-color: #f4f6f7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 250px;
+        color: #7f8c8d;
+        font-weight: 500;
+    }
+
+    .listing-card .card-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .listing-card .card-title {
+        margin-bottom: 0.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .listing-card .card-text {
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        line-clamp: 3;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+
+    .listing-card .card-footer {
+        background: none;
+        border-top: none;
+        padding-top: 0;
+    }
+
+    .section-title {
+        color: #2c3e50;
+        font-weight: 700;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background-color: #2ecc71;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero-section text-center text-white py-5 mb-5">
+    <div class="container hero-content">
+        <h1 class="display-4 mb-4">Welcome to EcoAlchemy</h1>
+        <p class="lead mb-4">A secure marketplace for industrial waste exchange and sustainable solutions.</p>
+        <p class="mb-4">Join our platform to turn industrial waste into valuable resources through secure and anonymous exchanges.</p>
+        
+        {% if not user.is_authenticated %}
+            <a href="{% url 'register' %}" class="btn btn-light btn-lg text-success">
+                <i class="fas fa-user-plus me-2"></i>Sign Up Now
+            </a>
+        {% else %}
+            <a href="{% url 'waste_list' %}" class="btn btn-light btn-lg text-success">
+                <i class="fas fa-shopping-cart me-2"></i>Browse Marketplace
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mb-5">
+        <div class="col-md-4 mb-4">
+            <div class="card feature-card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-shield-alt fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Anonymous Waste Listing</h5>
+                    <p class="card-text text-muted">List your industrial waste while maintaining your company's privacy. Only essential information is shared with potential buyers.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card feature-card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-recycle fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Sustainable Solutions</h5>
+                    <p class="card-text text-muted">Turn waste into resources through sustainable recycling and disposal methods, reducing your environmental footprint.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card feature-card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-leaf fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Green Credits</h5>
+                    <p class="card-text text-muted">Earn Green Credits for sustainable waste management practices and improve your company's CSR profile.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title mb-4">Latest Waste Listings</h2>
+    <div class="row mb-5">
+        {% if top_waste_listings %}
+            {% for listing in top_waste_listings %}
+                <div class="col-md-4 mb-4">
+                    <div class="card listing-card h-100">
+                        {% if listing.images.first %}
+                            <img src="{{ listing.images.first.image.url }}" class="card-img-top" alt="{{ listing.title }}">
+                        {% else %}
+                            <div class="no-image-placeholder">
+                                <span>No Image Available</span>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ listing.title }}</h5>
+                            <p class="card-text text-muted">{{ listing.description|truncatechars:100 }}</p>
+                            <div class="card-footer d-flex justify-content-between align-items-center mt-auto">
+                                <small class="text-muted">{{ listing.category.name }}</small>
+                                <a href="{% url 'waste_detail' listing.pk %}" class="btn btn-sm btn-outline-success">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No waste listings available at the moment.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <h2 class="section-title mb-4">Latest Products from Recycled Waste</h2>
+    <div class="row">
+        {% if top_products %}
+            {% for product in top_products %}
+                <div class="col-md-4 mb-4">
+                    <div class="card listing-card h-100">
+                        {% if product.images.first %}
+                            <img src="{{ product.images.first.image.url }}" class="card-img-top" alt="{{ product.title }}">
+                        {% else %}
+                            <div class="no-image-placeholder">
+                                <span>No Image Available</span>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.title }}</h5>
+                            <p class="card-text text-muted">{{ product.description|truncatechars:100 }}</p>
+                            <div class="card-footer d-flex justify-content-between align-items-center mt-auto">
+                                <small class="text-muted">Price: ${{ product.price }}</small>
+                                <a href="{% url 'product_detail' product.pk %}" class="btn btn-sm btn-outline-success">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No products available at the moment.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

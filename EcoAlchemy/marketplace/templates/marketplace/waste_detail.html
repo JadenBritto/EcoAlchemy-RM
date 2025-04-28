@@ -1,0 +1,271 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ waste_listing.title }} - EcoAlchemy{% endblock %}
+
+{% block extra_css %}
+<style>
+    .waste-detail-header {
+        background: linear-gradient(135deg, #198754 0%, #20c665 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+    }
+
+    .waste-image-carousel {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .waste-image-carousel:hover {
+        box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    }
+
+    .waste-image-carousel .carousel-item img {
+        max-height: 450px;
+        object-fit: cover;
+    }
+
+    .no-image-placeholder {
+        background-color: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 450px;
+        color: #6c757d;
+    }
+
+    .waste-details-card {
+        background-color: #f4f6f7;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .related-waste-card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .related-waste-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .related-waste-card .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .contact-btn {
+        background-color: #2ecc71;
+        border-color: #2ecc71;
+        transition: all 0.3s ease;
+    }
+
+    .contact-btn:hover {
+        background-color: #27ae60;
+        border-color: #27ae60;
+    }
+
+    .consultation-btn {
+        background-color: #3498db;
+        border-color: #3498db;
+        transition: all 0.3s ease;
+    }
+
+    .consultation-btn:hover {
+        background-color: #2980b9;
+        border-color: #2980b9;
+    }
+
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0.75rem 0;
+    }
+
+    .hazard-level-badge {
+        font-size: 0.9rem;
+        padding: 0.3rem 0.6rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="fas fa-home me-2"></i>Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'waste_list' %}"><i class="fas fa-recycle me-2"></i>Waste Marketplace</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <i class="fas fa-trash-alt me-2"></i>{{ waste_listing.title }}
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-5">
+            {% if waste_listing.images.exists %}
+                <div id="wasteImages" class="carousel slide waste-image-carousel" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for image in waste_listing.images.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ image.image.url }}" class="d-block w-100" alt="{{ waste_listing.title }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if waste_listing.images.count > 1 %}
+                        <button class="carousel-control-prev" type="button" data-bs-target="#wasteImages" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#wasteImages" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="no-image-placeholder">
+                    <i class="fas fa-image fa-3x"></i>
+                    <span class="ms-3">No Image Available</span>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-7">
+            <h1 class="mb-3">{{ waste_listing.title }}</h1>
+            <p class="text-muted mb-4">
+                <i class="fas fa-tag me-2"></i>Category: {{ waste_listing.category.name }} | 
+                <i class="fas fa-calendar-alt me-2"></i>Posted: {{ waste_listing.created_at|date:"F d, Y" }}
+            </p>
+            
+            <div class="waste-details-card">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>
+                            <strong><i class="fas fa-cubes me-2"></i>Quantity:</strong> 
+                            {{ waste_listing.quantity }} {{ waste_listing.unit }}
+                        </p>
+                        <p>
+                            <strong><i class="fas fa-map-marker-alt me-2"></i>Location:</strong> 
+                            {{ waste_listing.location }}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            <strong><i class="fas fa-rupee-sign me-2"></i>Price:</strong>
+                            {% if waste_listing.is_free %}
+                                <span class="badge bg-success">Free</span>
+                            {% else %}
+                                ${{ waste_listing.price }}
+                            {% endif %}
+                        </p>
+                        <p>
+                            <strong><i class="fas fa-radiation me-2"></i>Hazard Level:</strong>
+                            {% if waste_listing.hazard_level %}
+                                <span class="badge {% if waste_listing.hazard_level == 'High' %}bg-danger{% elif waste_listing.hazard_level == 'Medium' %}bg-warning{% else %}bg-success{% endif %} hazard-level-badge">
+                                    {{ waste_listing.hazard_level }}
+                                </span>
+                            {% else %}
+                                Not specified
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <h5 class="mt-4 mb-3"><i class="fas fa-file-alt me-2"></i>Description</h5>
+            <p>{{ waste_listing.description }}</p>
+            
+            {% if waste_listing.potential_uses %}
+                <h5 class="mt-4 mb-3"><i class="fas fa-recycle me-2"></i>Potential Uses</h5>
+                <p>{{ waste_listing.potential_uses }}</p>
+            {% endif %}
+            
+            <div class="mt-4">
+                <button class="btn contact-btn" data-bs-toggle="modal" data-bs-target="#contactModal">
+                    <i class="fas fa-envelope me-2"></i> Contact Anonymously
+                </button>
+                
+                {% if user.is_authenticated %}
+                    <a href="{% url 'create_case' %}" class="btn consultation-btn ms-2">
+                        <i class="fas fa-question-circle me-2"></i> Request Consultation
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <h3 class="mb-4"><i class="fas fa-recycle me-2"></i>Related Waste Listings</h3>
+    <div class="row">
+        {% if related_waste %}
+            {% for listing in related_waste %}
+                <div class="col-md-3 mb-4">
+                    <div class="card related-waste-card h-100">
+                        {% if listing.images.first %}
+                            <img src="{{ listing.images.first.image.url }}" class="card-img-top" alt="{{ listing.title }}">
+                        {% else %}
+                            <div class="card-img-top bg-light text-center py-5">No Image</div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ listing.title }}</h5>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    <i class="fas fa-cubes me-2"></i>
+                                    Quantity: {{ listing.quantity }} {{ listing.unit }}
+                                </small>
+                            </p>
+                        </div>
+                        <div class="card-footer bg-white">
+                            <a href="{% url 'waste_detail' listing.pk %}" class="btn btn-sm btn-primary w-100">
+                                <i class="fas fa-eye me-2"></i>View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col">
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-box-open fa-3x mb-3"></i>
+                    <h4>No Related Waste Listings</h4>
+                    <p>There are currently no similar waste listings available.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Contact Modal (unchanged from previous template) -->
+    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contactModalLabel">Contact Anonymously</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'contact_waste_owner' waste_listing.pk %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Your Message</label>
+                            <textarea class="form-control" id="message" name="message" rows="4" required placeholder="Enter your inquiry about this waste listing..."></textarea>
+                        </div>
+                        <p class="text-muted small">Your identity will remain anonymous. Only your message will be sent to the listing owner.</p>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                    {% else %}
+                        <p>Please <a href="{% url 'login' %}?next={{ request.path }}">login</a> or <a href="{% url 'register' %}">register</a> to contact the listing owner anonymously.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'core/base.html' %}
+{% block title %}EcoAlchemy - Consultation Cases{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Consultation Cases</h1>
+
+<div class="row mb-4">
+    <div class="col-md-4 text-end">
+        <a href="{% url 'create_case' %}" class="btn btn-success">
+            <i class="fas fa-plus"></i> New Consultation Case
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if cases %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            {% if user.profile.user_type == 'consultant' %}
+                                <th>Client</th>
+                            {% endif %}
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for case in cases %}
+                            <tr>
+                                <td>{{ case.title }}</td>
+                                {% if user.profile.user_type == 'consultant' %}
+                                    <td>{{ case.client.username }}</td>
+                                {% endif %}
+                                <td>
+                                    <span class="badge bg-{% if case.status == 'open' %}danger{% elif case.status == 'in_progress' %}warning{% elif case.status == 'resolved' %}success{% else %}secondary{% endif %}">
+                                        {{ case.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>{{ case.created_at|date:"M d, Y" }}</td>
+                                <td>
+                                    <a href="{% url 'case_detail' case.pk %}" class="btn btn-sm btn-primary">View</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No consultation cases available yet.</p>
+            <a href="{% url 'create_case' %}" class="btn btn-primary">Create Your First Case</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

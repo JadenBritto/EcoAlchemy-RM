@@ -1,0 +1,226 @@
+{% extends 'core/base.html' %}
+{% block title %}EcoAlchemy - Waste Marketplace{% endblock %}
+
+{% block extra_css %}
+<style>
+    .marketplace-header {
+        background: linear-gradient(135deg, #198754 0%, #20c665 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .waste-card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+    .waste-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .waste-card .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .no-image-placeholder {
+        background-color: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 200px;
+        color: #6c757d;
+    }
+
+    .waste-card .card-body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .waste-card .card-footer {
+        background: transparent;
+        border-top: none;
+        padding-top: 0;
+    }
+
+    .view-details-btn {
+        background-color: #2ecc71;
+        border-color: #2ecc71;
+        transition: all 0.3s ease;
+    }
+
+    .view-details-btn:hover {
+        background-color: #27ae60;
+        border-color: #27ae60;
+    }
+
+    .filter-section {
+        background-color: #f4f6f7;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+
+    .pricing-badge {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    .list-waste-btn {
+        background-color: #2ecc71;
+        border-color: #198754;
+        transition: all 0.3s ease;
+    }
+
+    .list-waste-btn:hover {
+        background-color: #27ae60;
+        border-color: #27ae60;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="marketplace-header">
+    <div class="container">
+        <h1 class="display-5">Waste Marketplace</h1>
+        <p class="lead">Discover, trade, and recycle industrial waste sustainably</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="filter-section">
+                <form method="get" class="d-flex align-items-center">
+                    <div class="input-group">
+                        <select name="category" class="form-select me-2">
+                            <option value="">All Categories</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"i" %}selected{% endif %}>
+                                    {{ category.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-filter me-2"></i>Filter
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4 text-end">
+            {% if user.is_authenticated and user.profile.user_type == 'industry' %}
+                <a href="{% url 'create_waste_listing' %}" class="btn list-waste-btn">
+                    <i class="fas fa-plus me-2"></i>List New Waste
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        {% if waste_listings %}
+            {% for listing in waste_listings %}
+                <div class="col-md-4 mb-4">
+                    <div class="card waste-card h-100">
+                        {% if listing.images.first %}
+                            <img src="{{ listing.images.first.image.url }}" class="card-img-top" alt="{{ listing.title }}">
+                        {% else %}
+                            <div class="no-image-placeholder">
+                                <i class="fas fa-image me-2"></i>No Image Available
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ listing.title }}</h5>
+                            <p class="card-text flex-grow-1">{{ listing.description|truncatechars:100 }}</p>
+                            <div class="mt-auto">
+                                <p class="card-text mb-2">
+                                    <small class="text-muted d-block">
+                                        <i class="fas fa-tags me-2"></i>Category: {{ listing.category.name }}
+                                    </small>
+                                    <small class="text-muted d-block">
+                                        <i class="fas fa-map-marker-alt me-2"></i>Location: {{ listing.location }}
+                                    </small>
+                                    <small class="text-muted d-block">
+                                        <i class="fas fa-cubes me-2"></i>Quantity: {{ listing.quantity }} 
+                                    </small>
+                                    <small class="text-muted d-block">
+                                        <i class="fas fa-cubes me-2"></i>Unit: {{ listing.unit }}
+                                    </small>
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    {% if listing.is_free %}
+                                        <span class="badge bg-success pricing-badge">
+                                            <i class="fas fa-gift me-2"></i>Free
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-success pricing-badge">
+                                            <i class="fas fa-rupee-sign me-2"></i>{{ listing.price }}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{% url 'waste_detail' listing.pk %}" class="btn view-details-btn w-100">
+                                <i class="fas fa-eye me-2"></i>View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col">
+                <div class="alert alert-info text-center">
+                    <i class="fas fa-box-open fa-3x mb-3"></i>
+                    <h4>No Waste Listings Found</h4>
+                    <p>
+                        {% if selected_category %}
+                            No listings match your selected category. 
+                            <a href="{% url 'waste_list' %}" class="alert-link">Clear filter</a> to see all listings.
+                        {% else %}
+                            Be the first to list some waste for recycling!
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if waste_listings.has_other_pages %}
+        <div class="d-flex justify-content-center mt-4">
+            <nav aria-label="Waste listings pagination">
+                <ul class="pagination">
+                    {% if waste_listings.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ waste_listings.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">
+                                <i class="fas fa-chevron-left me-2"></i>Previous
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% for page_num in waste_listings.paginator.page_range %}
+                        <li class="page-item {% if page_num == waste_listings.number %}active{% endif %}">
+                            <a class="page-link" href="?page={{ page_num }}{% if selected_category %}&category={{ selected_category }}{% endif %}">
+                                {{ page_num }}
+                            </a>
+                        </li>
+                    {% endfor %}
+
+                    {% if waste_listings.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ waste_listings.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">
+                                Next<i class="fas fa-chevron-right ms-2"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
