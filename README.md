@@ -30,7 +30,7 @@ EcoAlchemy is a Django-based web application that promotes eco-friendly living b
 
 ### 1. Clone the Repository
 
-bash
+```bash
 git clone https://github.com/yourusername/ecoalchemy.git
 cd ecoalchemy
 
