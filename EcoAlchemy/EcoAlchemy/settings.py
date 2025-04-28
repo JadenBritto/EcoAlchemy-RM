@@ -27,6 +27,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['ecoalchemy-rm.onrender.com', 'localhost', '127.0.0.1']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://ecoalchemy-rm.onrender.com',
+]
+CSRF_COOKIE_SECURE = True  # Only send the CSRF cookie over HTTPS connections
+CSRF_COOKIE_HTTPONLY = True  # Helps prevent CSRF cookies from being accessed by JavaScript
+CSRF_USE_SESSIONS = True  # Use sessions for CSRF protection instead of using cookies (optional)
 
 
 # Application definition
