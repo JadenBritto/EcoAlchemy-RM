@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-t)5cy5&n9x2ug49ncdd^!_*%bo@k-+u7@z+z2wr_$t)&m_mahj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ecoalchemy-rm.onrender.com', 'localhost', '127.0.0.1']
+
 
 
 # Application definition
